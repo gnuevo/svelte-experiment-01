@@ -9,7 +9,18 @@
 	let isDropdownOpen = $state(false);
 	function toggleDropdown() {
 		isDropdownOpen = !isDropdownOpen;
+		if (isDropdownOpen) {
+			document.body.addEventListener('click', handleMenuClose)
+		} else {
+			document.body.removeEventListener('click', handleMenuClose)
+		}
 		console.log(isDropdownOpen);
+	}
+
+	function handleMenuClose() {
+		isDropdownOpen = false
+		console.log('close')
+		document.body.removeEventListener('click', handleMenuClose)
 	}
 </script>
 
@@ -54,7 +65,8 @@
 			  <!-- Profile dropdown -->
 			  <div class="relative ml-3">
 				<div>
-				  <button type="button" class="relative flex max-w-xs items-center rounded-full bg-gray-800 text-sm focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800 focus:outline-hidden" id="user-menu-button" aria-expanded="false" aria-haspopup="true" on:click={toggleDropdown}>
+				  <button type="button" class="relative flex max-w-xs items-center rounded-full bg-gray-800 text-sm focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800 focus:outline-hidden" id="user-menu-button" aria-expanded="false" aria-haspopup="true" 
+				  	on:click|stopPropagation={toggleDropdown}>
 					<span class="absolute -inset-1.5"></span>
 					<span class="sr-only">Open user menu</span>
 					<img class="size-8 rounded-full" src="https://plus.unsplash.com/premium_photo-1664392248318-4e1d9361726e?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NjV8fHJhbmRvbSUyMHBlb3BsZXxlbnwwfHwwfHx8MA%3D%3D" alt="">
@@ -73,13 +85,13 @@
 				-->
 				{#if isDropdownOpen}
 				<div class="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 ring-1 shadow-lg ring-black/5 focus:outline-hidden
-				 	dropdown transition transform {isDropdownOpen ? 'ease-out duration-100 opacity-100 scale-100' : 'ease-in duration-75 opacity-0 scale-95'}"
+					dropdown transition transform {isDropdownOpen ? 'ease-out duration-100 opacity-100 scale-100' : 'ease-in duration-75 opacity-0 scale-95'}"
 					in:fade={{ duration: 100 }} out:fade={{ duration: 75 }}
 					role="menu" class:open={isDropdownOpen} aria-orientation="vertical" aria-labelledby="user-menu-button" tabindex="-1">
-				  <!-- Active: "bg-gray-100 outline-hidden", Not Active: "" -->
-				  <a href="#" class="block px-4 py-2 text-sm text-gray-700" role="menuitem" tabindex="-1" id="user-menu-item-0">Your Profile</a>
-				  <a href="#" class="block px-4 py-2 text-sm text-gray-700" role="menuitem" tabindex="-1" id="user-menu-item-1">Settings</a>
-				  <a href="#" class="block px-4 py-2 text-sm text-gray-700" role="menuitem" tabindex="-1" id="user-menu-item-2">Sign out</a>
+				<!-- Active: "bg-gray-100 outline-hidden", Not Active: "" -->
+				<a href="#" class="block px-4 py-2 text-sm text-gray-700" role="menuitem" tabindex="-1" id="user-menu-item-0">Your Profile</a>
+				<a href="#" class="block px-4 py-2 text-sm text-gray-700" role="menuitem" tabindex="-1" id="user-menu-item-1">Settings</a>
+				<a href="#" class="block px-4 py-2 text-sm text-gray-700" role="menuitem" tabindex="-1" id="user-menu-item-2">Sign out</a>
 				</div>
 				{/if}
 			  </div>
